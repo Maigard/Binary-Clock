@@ -1,0 +1,17 @@
+{
+  "uuid": "2e6fffcf-7b67-4da6-9b05-91cbc2324457",
+  "shortName": "Binary Clock",
+  "longName": "Binary Clock",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
