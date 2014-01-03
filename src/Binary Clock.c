@@ -14,7 +14,7 @@ static void drawBackground(struct Layer *layer, GContext *ctx)
 void window_update(struct tm *tick_time, TimeUnits units_changed)
 {
   Layer *window_layer = window_get_root_layer(window);
-  layer_mark_dirty(window_layer)
+  layer_mark_dirty(window_layer);
 }
 
 Layer *dotsLayer;
