@@ -136,13 +136,3 @@ Layer *dots_layer_create(GRect bounds, int direction)
   }
   return layer;
 }
-
-void dots_layer_destroy(Layer *layer) {
-  struct dots_layer_data *data = layer_get_data(layer);
-  int i, j;
-  for(i=0;i<data->numCols;i++){
-    for(j=0;j<data->numRows;j++)
-      layer_destroy(data->dots[i][j]);
-  }
-  layer_destroy(layer);
-}
