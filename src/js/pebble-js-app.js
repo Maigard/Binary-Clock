@@ -1,7 +1,6 @@
 function configurePebble () {
 	var config = {
 		foreground: window.localStorage.foreground,
-		background: window.localStorage.background,
 		layout: window.localStorage.layout,
 		statusBar: window.localStorage.statusBar,
 		decimalDigits: window.localStorage.decimalDigits,
@@ -13,12 +12,12 @@ Pebble.addEventListener("ready",
 	function  () {
 		if(window.localStorage.version === null) {
 			window.localStorage.version = 1;
-			window.localStorage.foreground = "black";
-			window.localStorage.background = "white";
+			window.localStorage.foreground = "white";
 			window.localStorage.layout = "vertical";
-			window.localStorage.statusBar = "on";
+			window.localStorage.statusBar = "off";
 			window.localStorage.decimalDigits = "off";
 		}
+		configurePebble();
 	}
 );
 
@@ -37,14 +36,11 @@ Pebble.addEventListener("showConfiguration",
 	
 Pebble.addEventListener("webviewclosed",
   function(e) {
-  	if (e.response) {
-	  	var response = JSON.parse(decodeURIComponent(e.response));
-	  	window.localStorage.foreground = response.foreground;
-	  	window.localStorage.layout = response.layout;
-	  	window.localStorage.statusBar = response.statusBar;
-	  	window.localStorage.decimalDigits = response.decimalDigits;
-		window.background = response.foreground == "white" ? "black" : "white";
-		configurePebble();
-	}
+  	var response = JSON.parse(decodeURIComponent(e.response));
+  	window.localStorage.foreground = response.foreground;
+  	window.localStorage.layout = response.layout;
+  	window.localStorage.statusBar = response.statusBar;
+  	window.localStorage.decimalDigits = response.decimalDigits;
+    configurePebble();
   }
 );

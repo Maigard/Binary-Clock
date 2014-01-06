@@ -11,10 +11,9 @@
   },
   "appKeys": {
       "foreground": 0,
-      "background": 1,
-      "layout": 2,
-      "statusBar": 3,
-      "decimalDigits": 4
+      "layout": 1,
+      "statusBar": 2,
+      "decimalDigits": 3
   },
   "resources": {
     "media": []

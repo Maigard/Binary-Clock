@@ -75,9 +75,6 @@ static void updateTime(struct Layer *layer, GContext *ctx)
 {
  time_t sinceEpoch = time(NULL);
  now = localtime(&sinceEpoch);
- char timeString[256];
- strftime(timeString, sizeof(timeString), "%D %T", now);
- //app_log(APP_LOG_LEVEL_DEBUG, __FILE__, __LINE__, "upated time: %s", timeString);
 }
 
 Layer *dots_layer_create(GRect bounds, int direction)
