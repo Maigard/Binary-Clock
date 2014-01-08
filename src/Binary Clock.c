@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "Binary Clock.h"
 #include "dotsLayer.h"
+#include "statusLayer.h"
 
 struct Config config;
 static Window *window;
@@ -60,7 +61,14 @@ static void window_load(Window *window) {
     .size=(GSize){.w=bounds.size.w, .h=bounds.size.h-40},
     .origin=(GPoint){.x=0, .y=20}
   }, HORIZONTAL_DOTS);
+
   layer_add_child(window_layer, dotsLayer);
+  Layer *status_layer = status_layer_create((GRect){
+    .size = (GSize) {.w = bounds.size.w, .h = 20},
+    .origin = (GPoint) {.x = 0, .y = 0}
+  });
+  layer_add_child(window_layer, status_layer);
+
   tick_timer_service_subscribe(SECOND_UNIT, window_update);
 }
 
