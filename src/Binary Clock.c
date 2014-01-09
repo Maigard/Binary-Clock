@@ -90,9 +90,8 @@ static void window_unload(Window *window) {
 }
 
 static void init(void) {
-  if(persist_exists(CONFIG)) {
-    persist_read_data(CONFIG, &config, sizeof(config));
-  } else {
+  if(persist_read_data(CONFIG, &config, sizeof(config)) == E_DOES_NOT_EXIST) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "data doesn't exist");
     config = (struct Config){
       .background = GColorBlack,
       .foreground = GColorWhite,
