@@ -94,6 +94,8 @@ Layer *dots_layer_create(GRect bounds, int direction)
     for(j=0;j<data->numCols;j++){
       if(j % 2 && i > 2)
         continue;
+      if(j == 5 && i > 1)
+        continue;
       data->dots[i][j] = layer_create_with_data(
         (GRect){.size=dotSize, .origin=(GPoint){.x=bounds.size.w-(j+1)*dotSize.w, .y=bounds.size.h-(i+1)*dotSize.h}},
         sizeof(struct DotId)
