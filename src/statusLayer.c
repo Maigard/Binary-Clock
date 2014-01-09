@@ -26,7 +26,11 @@ static void updateStatus(struct Layer *layer, GContext *ctx)
 
   time_t now;
   time(&now);
-  strftime(dateText, sizeof(dateText), "%m/%d/%y", localtime(&now));
+  if(config.date == MMDDYY) {
+    strftime(dateText, sizeof(dateText), "%m/%d/%y", localtime(&now));
+  } else {
+    strftime(dateText, sizeof(dateText), "%d/%m/%y", localtime(&now));
+  }
   text_layer_set_text_color(dateTextLayer, config.foreground);
   text_layer_set_background_color(dateTextLayer, config.background);
   text_layer_set_text(dateTextLayer, dateText);

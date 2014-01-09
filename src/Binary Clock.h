@@ -2,13 +2,12 @@
 
 #define CONFIG 1
 
-#define VERTICAL 1
-#define BIGENDIAN 2
-#define LITTLEENDIAN 3
+#define DDMMYY 1
+#define MMDDYY 2
 
 enum ConfigFields { 
 	foreground,
-	layout,
+	date,
 	statusBar,
 	decimalDigits,
 };
@@ -18,7 +17,7 @@ struct Config {
 	GColor foreground;
 	int numRows;
 	int numCols;
-    int layout;
+    int date;
     bool statusBar;
     bool decimalDigits;
 };

@@ -5,6 +5,7 @@
 
 struct Config config;
 static Window *window;
+static Layer *status_layer;
 
 void in_received_handler(DictionaryIterator *received, void *context) {
    Tuple *cur;
@@ -19,23 +20,22 @@ void in_received_handler(DictionaryIterator *received, void *context) {
       config.background = GColorWhite;
     }
    }
-   cur = dict_find(received, layout);
+   cur = dict_find(received, date);
    if(cur) {
-    if(! strcmp(cur->value->cstring, "vertical")) {
-      config.layout = VERTICAL;
-    } else if (! strcmp (cur->value->cstring, "bigEndian")) {
-      config.layout = BIGENDIAN;
-    } else if (! strcmp (cur->value->cstring, "littleEndian")) {
-      config.layout = LITTLEENDIAN;
+    if(! strcmp(cur->value->cstring, "mmddyy")) {
+      config.date = MMDDYY;
+    } else if (! strcmp (cur->value->cstring, "ddmmyy")) {
+      config.date = DDMMYY;
     }
    }
    cur = dict_find(received, statusBar);
    if(cur) {
-      config.statusBar = cur->value->uint8;
+      config.statusBar = strcmp(cur->value->cstring, "off");
+      layer_set_hidden(status_layer, ! config.statusBar);
    }
    cur = dict_find(received, decimalDigits);
    if(cur) {
-      config.decimalDigits = cur->value->uint8;
+      config.decimalDigits = strcmp(cur->value->cstring, "off");
    }
    persist_write_data(CONFIG, &config, sizeof(config));
  }
@@ -63,10 +63,11 @@ static void window_load(Window *window) {
   }, HORIZONTAL_DOTS);
 
   layer_add_child(window_layer, dotsLayer);
-  Layer *status_layer = status_layer_create((GRect){
+  status_layer = status_layer_create((GRect){
     .size = (GSize) {.w = bounds.size.w, .h = 20},
     .origin = (GPoint) {.x = 0, .y = 0}
   });
+  layer_set_hidden(status_layer, ! config.statusBar);
   layer_add_child(window_layer, status_layer);
 
   tick_timer_service_subscribe(SECOND_UNIT, window_update);
@@ -84,7 +85,7 @@ static void init(void) {
     config = (struct Config){
       .background = GColorBlack,
       .foreground = GColorWhite,
-      .layout = VERTICAL,
+      .date = MMDDYY,
       .statusBar = true,
       .decimalDigits = false
     };

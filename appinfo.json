@@ -11,7 +11,7 @@
   },
   "appKeys": {
       "foreground": 0,
-      "layout": 1,
+      "date": 1,
       "statusBar": 2,
       "decimalDigits": 3
   },

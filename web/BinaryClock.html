@@ -42,21 +42,17 @@
 
         <div data-role="fieldcontain">
           <fieldset data-role="controlgroup">
-            <legend>Dot Layout</legend>
+            <legend>Date Format</legend>
             <label>
-            	<input type="radio" name="layout" value="vertical" class="custom" />
-            	Vertical
+            	<input type="radio" name="date" value="mmddyy" class="custom" />
+            	mm/dd/yy
             </label>
 
             <label>
-            	<input type="radio" name="layout" value="bigEndian" class="custom" />
-            	Big Endian (Right to Left)
+            	<input type="radio" name="date" value="ddmmyy" class="custom" />
+            	dd/mm/yy
             </label>
 
-            <label>
-            	<input type="radio" name="layout" value="littleEndian" class="custom" />
-            	Little Endian (Left to Right)
-        	</label>
           </fieldset>
         </div>
 
@@ -91,7 +87,7 @@
 			  'foreground': $("#foreground").val(),
 			  'decimalDigits': $("#decimalDigits").val(),
 			  'statusBar': $("#statusBar").val(),
-			  'layout': $("input[name=layout]:checked").val()
+			  'date': $("input[name=date]:checked").val()
 			}
 			return options;
 		}
@@ -99,7 +95,7 @@
 		$(function() {
 			//var queryString = parseQueryString(document.location.search.substring(1));
 			var queryString = JSON.parse(decodeURIComponent(document.location.search.substring(3)));
-			$("input[name=layout][value="+queryString.layout+"]").prop("checked", true).checkboxradio("refresh");
+			$("input[name=date][value="+queryString.date+"]").prop("checked", true).checkboxradio("refresh");
 			$("select[name=foreground]").val(queryString.foreground).slider("refresh");
 			$("select[name=decimalDigits]").val(queryString.decimalDigits).slider("refresh");
 			$("select[name=statusBar]").val(queryString.statusBar).slider("refresh");
