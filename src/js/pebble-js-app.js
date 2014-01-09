@@ -30,7 +30,6 @@ Pebble.addEventListener("showConfiguration",
   			decimalDigits: window.localStorage.decimalDigits
   		};
   		var url = "http://dl.dropboxusercontent.com/u/19746203/BinaryClock.html";
-  		console.log(url + "?q=" + encodeURIComponent(JSON.stringify(config)));
   		Pebble.openURL(url + "?q=" + encodeURIComponent(JSON.stringify(config)));
   }
 );

@@ -70,7 +70,6 @@ Layer *status_layer_create(GRect bounds)
     GTextOverflowModeTrailingEllipsis,
     GTextAlignmentCenter
   );
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "date size: %d x %d @ (%d,%d)", dateSize.w, dateSize.h, bounds.size.w / 2 - dateSize.w / 2, 0);
   dateTextLayer = text_layer_create((GRect){
     .size = dateSize,
     .origin = (GPoint){

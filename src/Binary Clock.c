@@ -2,10 +2,12 @@
 #include "Binary Clock.h"
 #include "dotsLayer.h"
 #include "statusLayer.h"
+#include "decimalLayer.h"
 
 struct Config config;
 static Window *window;
 static Layer *status_layer;
+static Layer *decimal_layer;
 
 void in_received_handler(DictionaryIterator *received, void *context) {
    Tuple *cur;
@@ -36,6 +38,7 @@ void in_received_handler(DictionaryIterator *received, void *context) {
    cur = dict_find(received, decimalDigits);
    if(cur) {
       config.decimalDigits = strcmp(cur->value->cstring, "off");
+      layer_set_hidden(decimal_layer, ! config.decimalDigits);
    }
    persist_write_data(CONFIG, &config, sizeof(config));
  }
@@ -57,18 +60,26 @@ static void window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 
   layer_set_update_proc(window_layer, drawBackground);
+
   Layer *dotsLayer = dots_layer_create((GRect){
     .size=(GSize){.w=bounds.size.w, .h=bounds.size.h-40},
     .origin=(GPoint){.x=0, .y=20}
   }, HORIZONTAL_DOTS);
-
   layer_add_child(window_layer, dotsLayer);
+
   status_layer = status_layer_create((GRect){
     .size = (GSize) {.w = bounds.size.w, .h = 20},
     .origin = (GPoint) {.x = 0, .y = 0}
   });
   layer_set_hidden(status_layer, ! config.statusBar);
   layer_add_child(window_layer, status_layer);
+
+  decimal_layer = decimal_layer_create((GRect) {
+    .size = (GSize) {.w = bounds.size.w, .h = 25},
+    .origin = (GPoint) {.x = 0, .y = bounds.size.h - 25}
+  });
+  //layer_set_hidden(decimal_layer, ! config.decimalDigits);
+  layer_add_child(window_layer, decimal_layer);
 
   tick_timer_service_subscribe(SECOND_UNIT, window_update);
 }
