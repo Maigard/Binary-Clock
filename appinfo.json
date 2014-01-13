@@ -32,6 +32,11 @@
         "type": "png",
         "name": "BLUETOOTH",
         "file": "images/bluetooth.png"
+      },
+      {
+        "type": "png",
+        "name": "NOBLUETOOTH",
+        "file": "images/noBluetooth.png"
       }
     ]
   }

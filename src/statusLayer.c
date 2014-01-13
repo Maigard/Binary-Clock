@@ -14,7 +14,11 @@ static BitmapLayer *bluetoothLayer;
 static InverterLayer *bluetoothInverter;
 
 void bluetoothConnectionHandler(bool connected) {
-  layer_set_hidden((Layer *)bluetoothLayer, connected);
+  if(connected) {
+    bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_BLUETOOTH));
+  } else {
+    bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_NOBLUETOOTH));
+  }
 }
 
 static void updateStatus(struct Layer *layer, GContext *ctx)
@@ -27,9 +31,9 @@ static void updateStatus(struct Layer *layer, GContext *ctx)
   time_t now;
   time(&now);
   if(config.date == MMDDYY) {
-    strftime(dateText, sizeof(dateText), "%m/%d/%y", localtime(&now));
+    strftime(dateText, sizeof(dateText), "%a %m/%d/%y", localtime(&now));
   } else {
-    strftime(dateText, sizeof(dateText), "%d/%m/%y", localtime(&now));
+    strftime(dateText, sizeof(dateText), "%a %d/%m/%y", localtime(&now));
   }
   text_layer_set_text_color(dateTextLayer, config.foreground);
   text_layer_set_background_color(dateTextLayer, config.background);
@@ -47,7 +51,6 @@ static void updateBatteryStatus(BatteryChargeState charge)
 Layer *status_layer_create(GRect bounds)
 {
   Layer *layer = layer_create(bounds);
-  static uint8_t bluetoothImg[20*20];
 
   batteryTextLayer = text_layer_create((GRect){
     .size = (GSize){
@@ -64,7 +67,7 @@ Layer *status_layer_create(GRect bounds)
   battery_state_service_subscribe(updateBatteryStatus);   
   layer_add_child(layer, (Layer *)batteryTextLayer);
 
-  GSize dateSize = graphics_text_layout_get_content_size  ("00/00/0000",
+  GSize dateSize = graphics_text_layout_get_content_size  ("DDD 00/00/0000",
     fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
     bounds,
     GTextOverflowModeTrailingEllipsis,
@@ -84,10 +87,12 @@ Layer *status_layer_create(GRect bounds)
     .origin = (GPoint) {.x = bounds.size.w - 20, .y = 0}
   };
   bluetoothLayer = bitmap_layer_create(bluetoothBounds);
-  resource_load(resource_get_handle(RESOURCE_ID_BLUETOOTH), bluetoothImg, sizeof(bluetoothImg));
-  bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_data(bluetoothImg));
+  if(bluetooth_connection_service_peek()) {
+    bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_BLUETOOTH));
+  } else {
+    bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_NOBLUETOOTH));
+  }
   layer_add_child(layer, (Layer *)bluetoothLayer);
-  layer_set_hidden((Layer *)bluetoothLayer, ! bluetooth_connection_service_peek());
   bluetooth_connection_service_subscribe(bluetoothConnectionHandler);
 
   bluetoothInverter = inverter_layer_create((GRect){
