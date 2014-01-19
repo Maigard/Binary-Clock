@@ -30,6 +30,11 @@
       },
       {
         "type": "png",
+        "name": "CHARGINGBATTERY",
+        "file": "images/ChargingBattery.png"
+      },
+      {
+        "type": "png",
         "name": "BLUETOOTH",
         "file": "images/bluetooth.png"
       },
