@@ -47,7 +47,7 @@ static void updateStatus(struct Layer *layer, GContext *ctx)
 
 static void updateBattBar(struct Layer *layer, GContext *ctx)
 {
-    graphics_context_set_fill_color(ctx, config.foreground);
+    graphics_context_set_fill_color(ctx, GColorBlack);
     graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornersAll);
 }
 
@@ -118,11 +118,8 @@ Layer *status_layer_create(GRect bounds)
   layer_set_update_proc(batteryLayer, updateBatteryLayer);
   layer_add_child(layer, batteryLayer);
 
-  batteryInverter = inverter_layer_create((GRect){
-    .size = batteryBounds.size,
-    .origin = (GPoint) {.x = 0, .y = 0}
-  });
-  layer_add_child(batteryLayer, (Layer *)batteryInverter);
+  batteryInverter = inverter_layer_create(batteryBounds);
+  layer_add_child(layer, (Layer *)batteryInverter);
   layer_set_hidden((Layer *)batteryInverter, config.background);
 
   GRect bluetoothBounds = (GRect){
