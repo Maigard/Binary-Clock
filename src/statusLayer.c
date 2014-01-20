@@ -23,6 +23,7 @@ static void bluetoothConnectionHandler(bool connected) {
     bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_BLUETOOTH));
   } else {
     bitmap_layer_set_bitmap(bluetoothLayer, gbitmap_create_with_resource(RESOURCE_ID_NOBLUETOOTH));
+    vibes_double_pulse();
   }
   layer_mark_dirty((Layer *)bluetoothLayer);
 }
